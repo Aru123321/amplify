@@ -10,7 +10,7 @@ import Track from "./Views/Track";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "./Components/Drawer";
 import MyFavs from "./Views/MyFavs";
-import { Scrollbars }from "react-custom-scrollbars";
+/*import { Scrollbars }from "react-custom-scrollbars"; */
 import {
   BrowserRouter as Router,
   Switch,
@@ -59,7 +59,23 @@ function App() {
   const [openDrawer, setOpenDrawer] = React.useState(false);
 
   return (
-  <Scrollbars
+    <div style={{maxWidth: 420, margin: "auto"}}>
+      <div style={{padding: 16}}><MenuIcon onClick={() => setOpenDrawer(true)} /></div>
+    <Router>
+      <Switch>
+        <Route exact path="/help/:code" authed={token?true:false} component={Help} />
+        <Route exact path="/" authed={token?true:false} component={Volunteer} />
+        <PrivateRoute exact path="/track" authed={token?true:false} component={Track} />
+        <PrivateRoute exact path="/my-favourites" authed={token?true:false} component={MyFavs} />
+        <Route token={token} path='/need-help' authed={token?true:false} component={() => (<NeedHelp token={token} />)} />
+        <Route path='/logout' component={Logout} />
+        <LoginRoute authed={token?true:false} path='/login' component={() => (<Login setToken={setToken} />)} />
+        {/* <PrivateRoute authed={token?true:false} toke={token} path='/need-help' component={NeedHelp} /> */}
+      </Switch>
+    </Router>
+    <Drawer open={openDrawer} handleCloseDrawer={() => setOpenDrawer(false)} />
+    </div>
+  /* <Scrollbars
       style={{ width: 450, height: 800, align: "center", margin: "auto" }}
     >
       <div style={{ maxWidth: 420, margin: "auto" }}>
@@ -104,15 +120,14 @@ function App() {
               path="/login"
               component={() => <Login setToken={setToken} />}
             />
-            {/* <PrivateRoute authed={token?true:false} toke={token} path='/need-help' component={NeedHelp} /> */}
-          </Switch>
         </Router>
         <Drawer
           open={openDrawer}
           handleCloseDrawer={() => setOpenDrawer(false)}
         />
       </div>
-    </Scrollbars>
+    </Scrollbars> */
+            
     
   );
 }
